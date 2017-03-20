@@ -212,7 +212,7 @@ ggplot(mtcars, aes(mpg, fill=cyl)) + geom_density(alpha=.5)
 It might be useful to be able to see every observation on the graph. We can do so by adding the layer: geom_jitter.
 
 ```{r}
-p <- ggplot(mtcars, aes(cyl, mpg, fill=cyl)) + geom_violin() + coord_flip()
+p <- ggplot(mtcars, aes(cyl, mpg, fill=cyl, color=cyl)) + geom_violin() + coord_flip()
 p
 p + geom_jitter()
 ```
@@ -244,7 +244,12 @@ p
 p + facet_grid(gear~cyl)
 ```
 
+
 ### dplyr
+
+The package dplyr is very fast for large datasets. It has main functions/verbs to work with data.table that we are going to explore here. The functions are filter, select, mutate, arrange, and summarise.
+
+
 ```{r, message=F}
 library(dplyr)
 ```
@@ -318,6 +323,9 @@ We will try to predict the UPDRS score of the patient given their age, gender an
    11. DFA - Signal fractal scaling exponent
    12. PPE - A nonlinear measure of fundamental frequency variation 
 
+#### data.table
+
+The data.table package provides a very efficient back end for dplyr. I recommend using it if you are working with large datasets. Particularly "fread" to read in datasets. 
 
 ```{r}
 # A Tsanas, MA Little, PE McSharry, LO Ramig (2009)
@@ -331,7 +339,7 @@ library(data.table)
 
 #write.csv(parkinson_dat, file="parkinson_dat.csv")
 
-parkinson_dat <- read.csv("parkinson_dat.csv")
+parkinson_dat <- fread("parkinson_dat.csv")
 
 str(parkinson_dat)
 ```
@@ -436,7 +444,7 @@ We will classify the tumor into benign and malignant based on their thickness.
 #names(breast_cancer) <- c("id_number", "clump_thickness", "cell_size", "cell_shape", "marginal_adhesion", "single_epithelial", "bare_nuclei", "bland_chromatin", "normal_nucleoli", "mitoses", "class")
 #write.csv(breast_cancer, file="breast_cancer.csv")
 
-breast_cancer <- read.csv("breast_cancer.csv")
+breast_cancer <- fread("breast_cancer.csv")
 str(breast_cancer)
 ```
 
