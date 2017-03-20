@@ -181,6 +181,7 @@ It might be annoying to have to remember that 0 stands for automatic and 1 manua
 
 ```{r}
 levels(mtcars$am) <- c("automatic", "manual")
+str(mtcars)
 ```
 
 
@@ -264,14 +265,13 @@ temp1
 #### Select
 
 ```{r}
-temp <- mtcars %>% select(mpg, cyl)
-temp
+mtcars %>% select(mpg, cyl) %>% head()
 ```
 
 #### Arrange
 
 ```{r}
-mtcars %>% select(cyl,am,wt) %>% arrange(cyl,am,wt)
+mtcars %>% select(cyl,am,wt) %>% arrange(cyl,am,wt) %>% head()
 ```
 
 #### Mutate
@@ -286,13 +286,15 @@ str(temp1)
 #### Filter
 
 ```{r}
-temp1 %>% filter(heavy=="Heavy")
+temp1 %>% filter(heavy=="Heavy") %>% head()
 ```
 
 
 ## Real World Problems
 
 ### Parkinsons
+
+We will try to predict the UPDRS score of the patient given their age, gender and different measures.
 
 #### Attribute Information:
 
@@ -408,6 +410,8 @@ summary(mymodel)
 ```
 
 ### Breast Cancer
+
+We will classify the tumor into benign and malignant based on their thickness.
 
 #### Attribute Information:
    #  Attribute                     Domain
