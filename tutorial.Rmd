@@ -192,6 +192,8 @@ levels(mtcars$am) <- c("automatic", "manual")
 
 Suppose being interested in the distribution of mpg. The first argument is the dataset name, the second is "aes" (standing for aesthetic) which that the dependent and indepdent variables.
 
+We then add a layer to the plot using the "+" sign e.g. the density:
+
 ```{r}
 # To use the ggplot2 library we have to call it with the library command
 # One could think of the command "install.packages" as buying shoes and "library" as putting them on.
@@ -200,13 +202,13 @@ library(ggplot2)
 ggplot(mtcars, aes(mpg)) + geom_density(fill="lightblue")
 ```
 
-The number of cylinders in a car might impact its consumption.
+The number of cylinders in a car might impact its consumption. Let us stratify the densities by cylinders. Note the transparency of the plot using the parameter alpha.
 
 ```{r}
 ggplot(mtcars, aes(mpg, fill=cyl)) + geom_density(alpha=.5)
 ```
 
-It might be useful to be able to see every observation on the graph.
+It might be useful to be able to see every observation on the graph. We can do so by adding the layer: geom_jitter.
 
 ```{r}
 ggplot(mtcars, aes(cyl, mpg, fill=cyl)) + geom_boxplot() + geom_jitter()
@@ -336,12 +338,14 @@ parkinson_dat$sex <- factor(parkinson_dat$sex)
 levels(parkinson_dat$sex) <- c("male", "female")
 ```
 
-
+Inspecting the distribution of subjects based on gender.
 
 ```{r}
 parkinson_dat %>% distinct(subject, .keep_all = TRUE) %>% group_by(sex) %>%
   summarise(count=n(), mean_age=mean(age))
 ```
+
+Inspecting the distribution of older subjects based on gender.
 
 ```{r}
 parkinson_dat_old <- parkinson_dat %>% filter(age >= 65)
@@ -349,6 +353,12 @@ parkinson_dat_old %>% distinct(subject, .keep_all = TRUE) %>% group_by(sex) %>%
   summarise(count=n(), mean_age=mean(age))
 ```
 
+Inspecting the score distribution based on gender.
+
+```{r}
+library(ggplot2)
+ggplot(parkinson_dat, aes(sex, motor_UPDRS, fill=sex)) + geom_boxplot()
+```
 
 
 ```{r}
@@ -357,18 +367,18 @@ new_parkinson_dat <- parkinson_dat %>% group_by(subject) %>%
 new_parkinson_dat
 ```
 
-```{r}
-library(ggplot2)
-ggplot(parkinson_dat, aes(sex, motor_UPDRS, fill=sex)) + geom_boxplot()
-```
 
+
+Looking at the score distribution for people over/under 65 years old.
 
 
 ```{r}
-new_parkinson_dat$less65 <- new_parkinson_dat$age < 65
-ggplot(new_parkinson_dat, aes(less65, mean_motor_UPDRS, fill=less65)) +
+new_parkinson_dat$old <- new_parkinson_dat$age >= 65
+ggplot(new_parkinson_dat, aes(old, mean_motor_UPDRS, fill=old)) +
   geom_boxplot() #+ ggtitle("my title") + xlab("x lab") + ylab("y lab")
 ```
+
+Looking at the score distribution of the first 6 subjects and filling the boxplot base don their age.
 
 ```{r}
 parkinson_dat_sub <- subset(parkinson_dat, subject<=6)
@@ -376,7 +386,7 @@ ggplot(parkinson_dat_sub, aes("", total_UPDRS, fill=age)) + geom_boxplot() +
   facet_wrap(~subject, ncol = 3)
 ```
 
-
+#### Advanced ggplot
 
 ```{r}
 parkinson_dat_select <- parkinson_dat %>% select(total_UPDRS,PPE,DFA)
@@ -430,15 +440,21 @@ levels(breast_cancer$class) <- c("benign", "malignant")
 str(breast_cancer)
 ```
 
-
-```{r}
-ggplot(breast_cancer, aes(clump_thickness)) + geom_bar()
-```
+Let us see how many tumor of each class is present in our dataset
 
 ```{r}
 breast_cancer %>% group_by(class) %>% summarise(count=n())
 ```
 
+We can look at the distribution of the clumb thickness using a barplot.
+
+```{r}
+ggplot(breast_cancer, aes(clump_thickness)) + geom_bar()
+```
+
+
+
+Using ggplot to inspect the distribution of the clump's thickness given the tumor's class.
 
 ```{r}
 ggplot(breast_cancer, aes(class, clump_thickness, fill=class)) + geom_boxplot()
