@@ -212,7 +212,9 @@ ggplot(mtcars, aes(mpg, fill=cyl)) + geom_density(alpha=.5)
 It might be useful to be able to see every observation on the graph. We can do so by adding the layer: geom_jitter.
 
 ```{r}
-ggplot(mtcars, aes(cyl, mpg, fill=cyl)) + geom_boxplot() + geom_jitter()
+p <- ggplot(mtcars, aes(cyl, mpg, fill=cyl)) + geom_boxplot() 
+p
+p + geom_jitter()
 ```
 
 #### Relationship Across Variables
